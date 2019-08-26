@@ -32,7 +32,7 @@ class SesHttpTransport extends AbstractHttpTransport
 
     /**
      * @param ApiTokenCredential|UsernamePasswordCredential $credential credential object for SES authentication. ApiTokenCredential and UsernamePasswordCredential are supported.
-     * @param string $region Amazon SES region (currently one of us-east-1, us-west-2, or eu-west-1)
+     * @param string                                        $region     Amazon SES region (currently one of us-east-1, us-west-2, or eu-west-1)
      */
     public function __construct($credential, string $region = null, HttpClientInterface $client = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
     {

@@ -22,6 +22,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class SesSmtpTransport extends EsmtpTransport
 {
     /**
+     * @param UsernamePasswordCredential $credential credential object for SES authentication.
      * @param string $region Amazon SES region (currently one of us-east-1, us-west-2, or eu-west-1)
      */
     public function __construct(UsernamePasswordCredential $credential, string $region = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)

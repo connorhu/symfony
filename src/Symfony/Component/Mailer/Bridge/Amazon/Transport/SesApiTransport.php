@@ -25,10 +25,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class SesApiTransport extends AbstractApiTransport
 {
-    use RequestSignTrait;
-
-    private const ENDPOINT = 'https://email.%region%.amazonaws.com';
-
     private $credential;
     private $region;
 
@@ -57,14 +53,15 @@ class SesApiTransport extends AbstractApiTransport
 
     protected function doSendApi(Email $email, SmtpEnvelope $envelope): ResponseInterface
     {
-        $headers = $this->getSignatureHeaders();
-        $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-
-        $endpoint = str_replace('%region%', $this->region, self::ENDPOINT);
-        $response = $this->client->request('POST', $endpoint, [
-            'headers' => $headers,
-            'body' => $this->getPayload($email, $envelope),
-        ]);
+        $request = new SesRequest($this->client, $this->region);
+        $request->setMode(SesRequest::REQUEST_MODE_API);
+        $request->setCredential($this->credential);
+        
+        if ($email->getAttachments()) {
+            $response = $request->sendRawEmail($email->toString());
+        } else {
+            $response = $request->sendEmail($email, $envelope);
+        }
 
         if (200 !== $response->getStatusCode()) {
             $error = new \SimpleXMLElement($response->getContent(false));
@@ -75,35 +72,4 @@ class SesApiTransport extends AbstractApiTransport
         return $response;
     }
 
-    private function getPayload(Email $email, SmtpEnvelope $envelope): array
-    {
-        if ($email->getAttachments()) {
-            return [
-                'Action' => 'SendRawEmail',
-                'RawMessage.Data' => base64_encode($email->toString()),
-            ];
-        }
-
-        $payload = [
-            'Action' => 'SendEmail',
-            'Destination.ToAddresses.member' => $this->stringifyAddresses($this->getRecipients($email, $envelope)),
-            'Message.Subject.Data' => $email->getSubject(),
-            'Source' => $envelope->getSender()->toString(),
-        ];
-
-        if ($emails = $email->getCc()) {
-            $payload['Destination.CcAddresses.member'] = $this->stringifyAddresses($emails);
-        }
-        if ($emails = $email->getBcc()) {
-            $payload['Destination.BccAddresses.member'] = $this->stringifyAddresses($emails);
-        }
-        if ($email->getTextBody()) {
-            $payload['Message.Body.Text.Data'] = $email->getTextBody();
-        }
-        if ($email->getHtmlBody()) {
-            $payload['Message.Body.Html.Data'] = $email->getHtmlBody();
-        }
-
-        return $payload;
-    }
 }

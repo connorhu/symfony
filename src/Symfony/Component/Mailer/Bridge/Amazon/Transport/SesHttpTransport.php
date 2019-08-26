@@ -12,6 +12,7 @@
 namespace Symfony\Component\Mailer\Bridge\Amazon\Transport;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Bridge\Amazon\SesRequest;
 use Symfony\Component\Mailer\Bridge\Amazon\Credential\ApiTokenCredential;
 use Symfony\Component\Mailer\Exception\HttpTransportException;
 use Symfony\Component\Mailer\SentMessage;
@@ -25,10 +26,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class SesHttpTransport extends AbstractHttpTransport
 {
-    use RequestSignTrait;
-
-    private const ENDPOINT = 'https://email.%region%.amazonaws.com';
-
     private $credential;
     private $region;
 
@@ -57,14 +54,11 @@ class SesHttpTransport extends AbstractHttpTransport
 
     protected function doSendHttp(SentMessage $message): ResponseInterface
     {
-        $endpoint = str_replace('%region%', $this->region, self::ENDPOINT);
-        $response = $this->client->request('POST', $endpoint, [
-            'headers' => $this->getSignatureHeaders(),
-            'body' => [
-                'Action' => 'SendRawEmail',
-                'RawMessage.Data' => base64_encode($message->toString()),
-            ],
-        ]);
+        $request = new SesRequest($this->client, $this->region);
+        $request->setMode(SesRequest::REQUEST_MODE_HTTP);
+        $request->setCredential($this->credential);
+        
+        $response = $request->sendRawEmail($message->toString());
 
         if (200 !== $response->getStatusCode()) {
             $error = new \SimpleXMLElement($response->getContent(false));

@@ -56,7 +56,7 @@ class SesApiTransport extends AbstractApiTransport
         $request = new SesRequest($this->client, $this->region);
         $request->setMode(SesRequest::REQUEST_MODE_API);
         $request->setCredential($this->credential);
-        
+
         if ($email->getAttachments()) {
             $response = $request->sendRawEmail($email->toString());
         } else {
@@ -71,5 +71,4 @@ class SesApiTransport extends AbstractApiTransport
 
         return $response;
     }
-
 }

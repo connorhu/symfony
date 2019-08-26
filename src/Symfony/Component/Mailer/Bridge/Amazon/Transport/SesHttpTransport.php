@@ -12,8 +12,8 @@
 namespace Symfony\Component\Mailer\Bridge\Amazon\Transport;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Bridge\Amazon\SesRequest;
 use Symfony\Component\Mailer\Bridge\Amazon\Credential\ApiTokenCredential;
+use Symfony\Component\Mailer\Bridge\Amazon\SesRequest;
 use Symfony\Component\Mailer\Exception\HttpTransportException;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractHttpTransport;
@@ -57,7 +57,7 @@ class SesHttpTransport extends AbstractHttpTransport
         $request = new SesRequest($this->client, $this->region);
         $request->setMode(SesRequest::REQUEST_MODE_HTTP);
         $request->setCredential($this->credential);
-        
+
         $response = $request->sendRawEmail($message->toString());
 
         if (200 !== $response->getStatusCode()) {

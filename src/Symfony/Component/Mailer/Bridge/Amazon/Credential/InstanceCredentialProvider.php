@@ -27,15 +27,14 @@ class InstanceCredentialProvider
     public function __construct(HttpClientInterface $client = null, int $retries = 3)
     {
         $this->retries = $retries;
+        $this->client = $client;
 
-        if (null === $client) {
+        if (null === $this->client) {
             if (!class_exists(HttpClient::class)) {
                 throw new LogicException(sprintf('You cannot use "%s" as the HttpClient component is not installed. Try running "composer require symfony/http-client".', __CLASS__));
             }
 
             $this->client = HttpClient::create();
-        } else {
-            $this->client = $client;
         }
     }
 

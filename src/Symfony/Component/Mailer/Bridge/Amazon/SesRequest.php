@@ -20,7 +20,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
- * @author Karoly Gossler
+ * @author Karoly Gossler <connor@connor.hu>
  */
 class SesRequest
 {
@@ -167,24 +167,23 @@ class SesRequest
         }
         $signedHeaders = implode(';', $signedHeadersBuffer);
 
-        $canonicalRequestBuffer = [];
-        $canonicalRequestBuffer[] = $this->method;
-        $canonicalRequestBuffer[] = '/';
-        $canonicalRequestBuffer[] = '';
-        $canonicalRequestBuffer[] = $canonicalHeaders;
-        $canonicalRequestBuffer[] = '';
-        $canonicalRequestBuffer[] = $signedHeaders;
-        $canonicalRequestBuffer[] = hash('sha256', $this->arrayToSignableString($this->payload));
-        $hashedCanonicalRequest = hash('sha256', implode("\n", $canonicalRequestBuffer));
+        $hashedCanonicalRequest = hash('sha256', sprintf(
+            "%s\n/\n\n%s\n\n%s\n%s",
+            $this->method,
+            $canonicalHeaders,
+            $signedHeaders,
+            hash('sha256', $this->arrayToSignableString($this->payload)),
+        ));
 
-        $this->scope = $this->now->format('Ymd').'/'.$this->region.'/'.self::SERVICE_NAME.'/aws4_request';
+        $scope = $this->now->format('Ymd').'/'.$this->region.'/'.self::SERVICE_NAME.'/aws4_request';
 
-        $stringToSignBuffer = [];
-        $stringToSignBuffer[] = 'AWS4-HMAC-SHA256';
-        $stringToSignBuffer[] = $this->now->format('Ymd\THis\Z');
-        $stringToSignBuffer[] = $this->scope;
-        $stringToSignBuffer[] = $hashedCanonicalRequest;
-        $stringToSign = implode("\n", $stringToSignBuffer);
+        $stringToSign = sprintf(
+            "%s\n%s\n%s\n%s",
+            'AWS4-HMAC-SHA256',
+            $this->now->format('Ymd\THis\Z'),
+            $scope,
+            $hashedCanonicalRequest,
+        );
 
         if ($this->credential instanceof ApiTokenCredential) {
             $keySecret = 'AWS4'.$this->credential->getSecretKey();
@@ -200,16 +199,18 @@ class SesRequest
         $keySigning = hash_hmac('sha256', 'aws4_request', $keyService, true);
         $signature = hash_hmac('sha256', $stringToSign, $keySigning);
 
-        $authorizationBuffer = 'AWS4-HMAC-SHA256 ';
         if ($this->credential instanceof ApiTokenCredential) {
-            $authorizationBuffer .= 'Credential='.$this->credential->getAccessKey().'/'.$this->scope;
+            $fullCredentialString = $this->credential->getAccessKey().'/'.$scope;
         } elseif ($this->credential instanceof UsernamePasswordCredential) {
-            $authorizationBuffer .= 'Credential='.$this->credential->getUsername().'/'.$this->scope;
+            $fullCredentialString = $this->credential->getUsername().'/'.$scope;
         }
-        $authorizationBuffer .= ', SignedHeaders='.$signedHeaders;
-        $authorizationBuffer .= ', Signature='.$signature;
-
-        $this->requestHeaders['Authorization'] = $authorizationBuffer;
+        
+        $this->requestHeaders['Authorization'] = sprintf(
+            'AWS4-HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s',
+            $fullCredentialString,
+            $signedHeaders,
+            $signature
+        );
     }
 
     private function arrayToSignableString(array $array): string

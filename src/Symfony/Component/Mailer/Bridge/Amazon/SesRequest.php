@@ -204,7 +204,7 @@ class SesRequest
         } elseif ($this->credential instanceof UsernamePasswordCredential) {
             $fullCredentialString = $this->credential->getUsername().'/'.$scope;
         }
-        
+
         $this->requestHeaders['Authorization'] = sprintf(
             'AWS4-HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s',
             $fullCredentialString,

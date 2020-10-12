@@ -69,12 +69,31 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
      * @var \DOMDocument
      */
     private $dom;
+    private $domStack = [];
     private $format;
     private $context;
 
     public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
+    }
+
+    private function pushDom(array $context = []): void
+    {
+        if (null !== $this->dom) {
+            $this->domStack[] = $this->dom;
+        }
+
+        $this->dom = $this->createDomDocument($context);
+    }
+
+    private function popDom(): void
+    {
+        if (0 === \count($this->domStack)) {
+            return;
+        }
+
+        $this->dom = array_pop($this->domStack);
     }
 
     /**
@@ -90,7 +109,7 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
 
         $xmlRootNodeName = $context[self::ROOT_NODE_NAME] ?? $this->defaultContext[self::ROOT_NODE_NAME];
 
-        $this->dom = $this->createDomDocument($context);
+        $this->pushDom($context);
         $this->format = $format;
         $this->context = $context;
 
@@ -102,7 +121,10 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
             $this->appendNode($this->dom, $data, $xmlRootNodeName);
         }
 
-        return $this->dom->saveXML($ignorePiNode ? $this->dom->documentElement : null);
+        $encodedString = $this->dom->saveXML($ignorePiNode ? $this->dom->documentElement : null);
+        $this->popDom();
+
+        return $encodedString;
     }
 
     /**

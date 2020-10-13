@@ -68,32 +68,12 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
     /**
      * @var \DOMDocument
      */
-    private $dom;
-    private $domStack = [];
     private $format;
     private $context;
 
     public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
-    }
-
-    private function pushDom(array $context = []): void
-    {
-        if (null !== $this->dom) {
-            $this->domStack[] = $this->dom;
-        }
-
-        $this->dom = $this->createDomDocument($context);
-    }
-
-    private function popDom(): void
-    {
-        if (0 === \count($this->domStack)) {
-            return;
-        }
-
-        $this->dom = array_pop($this->domStack);
     }
 
     /**
@@ -109,22 +89,19 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
 
         $xmlRootNodeName = $context[self::ROOT_NODE_NAME] ?? $this->defaultContext[self::ROOT_NODE_NAME];
 
-        $this->pushDom($context);
+        $dom = $this->createDomDocument($context);
         $this->format = $format;
         $this->context = $context;
 
         if (null !== $data && !is_scalar($data)) {
-            $root = $this->dom->createElement($xmlRootNodeName);
-            $this->dom->appendChild($root);
+            $root = $dom->createElement($xmlRootNodeName);
+            $dom->appendChild($root);
             $this->buildXml($root, $data, $xmlRootNodeName);
         } else {
-            $this->appendNode($this->dom, $data, $xmlRootNodeName);
+            $this->appendNode($dom, $data, $xmlRootNodeName);
         }
 
-        $encodedString = $this->dom->saveXML($ignorePiNode ? $this->dom->documentElement : null);
-        $this->popDom();
-
-        return $encodedString;
+        return $dom->saveXML($ignorePiNode ? $dom->documentElement : null);
     }
 
     /**
@@ -219,7 +196,7 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
     final protected function appendXMLString(\DOMNode $node, string $val): bool
     {
         if ('' !== $val) {
-            $frag = $this->dom->createDocumentFragment();
+            $frag = $node->ownerDocument->createDocumentFragment();
             $frag->appendXML($val);
             $node->appendChild($frag);
 
@@ -231,7 +208,7 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
 
     final protected function appendText(\DOMNode $node, string $val): bool
     {
-        $nodeText = $this->dom->createTextNode($val);
+        $nodeText = $node->ownerDocument->createTextNode($val);
         $node->appendChild($nodeText);
 
         return true;
@@ -239,7 +216,7 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
 
     final protected function appendCData(\DOMNode $node, string $val): bool
     {
-        $nodeText = $this->dom->createCDATASection($val);
+        $nodeText = $node->ownerDocument->createCDATASection($val);
         $node->appendChild($nodeText);
 
         return true;
@@ -261,7 +238,7 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
 
     final protected function appendComment(\DOMNode $node, string $data): bool
     {
-        $node->appendChild($this->dom->createComment($data));
+        $node->appendChild($node->ownerDocument->createComment($data));
 
         return true;
     }
@@ -464,7 +441,15 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
      */
     private function appendNode(\DOMNode $parentNode, $data, string $nodeName, string $key = null): bool
     {
-        $node = $this->dom->createElement($nodeName);
+        $dom = null;
+        if ($parentNode instanceof \DomDocument) {
+            $dom = $parentNode;
+        }
+        else {
+            $dom = $parentNode->ownerDocument;
+        }
+        
+        $node = $dom->createElement($nodeName);
         if (null !== $key) {
             $node->setAttribute('key', $key);
         }
@@ -495,12 +480,12 @@ class XmlEncoder implements EncoderInterface, DecoderInterface, NormalizationAwa
         if (\is_array($val)) {
             return $this->buildXml($node, $val);
         } elseif ($val instanceof \SimpleXMLElement) {
-            $child = $this->dom->importNode(dom_import_simplexml($val), true);
+            $child = $node->ownerDocument->importNode(dom_import_simplexml($val), true);
             $node->appendChild($child);
         } elseif ($val instanceof \Traversable) {
             $this->buildXml($node, $val);
         } elseif ($val instanceof \DOMNode) {
-            $child = $this->dom->importNode($val, true);
+            $child = $node->ownerDocument->importNode($val, true);
             $node->appendChild($child);
         } elseif (\is_object($val)) {
             if (null === $this->serializer) {

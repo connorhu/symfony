@@ -59,6 +59,28 @@ final class DiscordOptions implements MessageOptionsInterface
 
         return $this;
     }
+    
+    const PARSE_MENTION_ROLES = 'roles';
+    const PARSE_MENTION_USERS = 'users';
+    const PARSE_MENTION_EVERYONE = 'everyone';
+    
+    public function parseMentions(array $mentions): self
+    {
+        $this->options['allowed_mentions']['parse'] = $mentions;
+        return $this;
+    }
+    
+    public function mentionedRoles(array $roles): self
+    {
+        $this->options['allowed_mentions']['roles'] = $roles;
+        return $this;
+    }
+    
+    public function mentionedUser(array $roles): self
+    {
+        $this->options['allowed_mentions']['users'] = $roles;
+        return $this;
+    }
 
     public function addEmbed(DiscordEmbedInterface $embed): self
     {

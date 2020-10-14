@@ -32,6 +32,44 @@ final class DiscordOptionsTest extends TestCase
             'avatar_url' => 'http://ava.tar/pic.png',
             'tts' => true,
         ]);
+
+        $discordOptions = (new DiscordOptions())
+            ->parseMentions([DiscordOptions::PARSE_MENTION_ROLES, DiscordOptions::PARSE_MENTION_USERS, DiscordOptions::PARSE_MENTION_EVERYONE])
+        ;
+
+        $this->assertSame($discordOptions->toArray(), [
+            'allowed_mentions' => [
+                'parse' => [
+                    'roles',
+                    'users',
+                    'everyone',
+                ]
+            ],
+        ]);
+
+        $discordOptions = (new DiscordOptions())
+            ->mentionedRoles(['123', '456', '678'])
+        ;
+
+        $this->assertSame($discordOptions->toArray(), [
+            'allowed_mentions' => [
+                'roles' => [
+                    '123', '456', '678'
+                ]
+            ],
+        ]);
+
+        $discordOptions = (new DiscordOptions())
+            ->mentionedUser(['123', '456', '678'])
+        ;
+
+        $this->assertSame($discordOptions->toArray(), [
+            'allowed_mentions' => [
+                'users' => [
+                    '123', '456', '678'
+                ]
+            ],
+        ]);
     }
 
     public function testDiscordEmbedFields()

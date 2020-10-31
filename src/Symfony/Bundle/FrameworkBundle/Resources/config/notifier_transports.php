@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfony\Component\Notifier\Bridge\Apns\ApnsTransportFactory;
 use Symfony\Component\Notifier\Bridge\Discord\DiscordTransportFactory;
 use Symfony\Component\Notifier\Bridge\Esendex\EsendexTransportFactory;
 use Symfony\Component\Notifier\Bridge\Firebase\FirebaseTransportFactory;
@@ -38,6 +39,10 @@ return static function (ContainerConfigurator $container) {
         ->set('notifier.transport_factory.abstract', AbstractTransportFactory::class)
             ->abstract()
             ->args([service('event_dispatcher'), service('http_client')->ignoreOnInvalid()])
+
+        ->set('notifier.transport_factory.apns', ApnsTransportFactory::class)
+            ->parent('notifier.transport_factory.abstract')
+            ->tag('texter.transport_factory')
 
         ->set('notifier.transport_factory.slack', SlackTransportFactory::class)
             ->parent('notifier.transport_factory.abstract')

@@ -101,6 +101,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Mime\Header\Headers;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
 use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Notifier\Bridge\Apns\ApnsTransportFactory;
 use Symfony\Component\Notifier\Bridge\Discord\DiscordTransportFactory;
 use Symfony\Component\Notifier\Bridge\Esendex\EsendexTransportFactory;
 use Symfony\Component\Notifier\Bridge\Firebase\FirebaseTransportFactory;
@@ -2208,6 +2209,7 @@ class FrameworkExtension extends Extension
         $container->getDefinition('notifier.channel_policy')->setArgument(0, $config['channel_policy']);
 
         $classToServices = [
+            ApnsTransportFactory::class => 'notifier.transport_factory.apns',
             SlackTransportFactory::class => 'notifier.transport_factory.slack',
             TelegramTransportFactory::class => 'notifier.transport_factory.telegram',
             MattermostTransportFactory::class => 'notifier.transport_factory.mattermost',

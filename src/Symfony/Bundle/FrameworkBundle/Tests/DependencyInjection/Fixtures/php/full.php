@@ -68,6 +68,7 @@ $container->loadFromExtension('framework', [
         'circular_reference_handler' => 'my.circular.reference.handler',
         'max_depth_handler' => 'my.max.depth.handler',
         'default_context' => ['enable_max_depth' => true],
+        'default_version' => '1.0.0',
     ],
     'property_info' => true,
     'ide' => 'file%%link%%format',

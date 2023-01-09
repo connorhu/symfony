@@ -1861,6 +1861,12 @@ class FrameworkExtension extends Extension
         if (isset($config['default_context']) && $config['default_context']) {
             $container->setParameter('serializer.default_context', $config['default_context']);
         }
+
+        if (isset($config['default_version']) && $config['default_version']) {
+            $defaultContext = $container->getDefinition('serializer.normalizer.object')->getArgument(6);
+            $defaultContext += ['version' => $config['default_version']];
+            $container->getDefinition('serializer.normalizer.object')->replaceArgument(6, $defaultContext);
+        }
     }
 
     private function registerPropertyInfoConfiguration(ContainerBuilder $container, PhpFileLoader $loader)

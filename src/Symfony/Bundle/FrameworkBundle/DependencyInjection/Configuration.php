@@ -1009,6 +1009,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue([])
                             ->prototype('variable')->end()
                         ->end()
+                        ->scalarNode('default_version')->end()
                     ->end()
                 ->end()
             ->end()

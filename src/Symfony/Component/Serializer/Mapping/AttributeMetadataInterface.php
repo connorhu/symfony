@@ -109,4 +109,24 @@ interface AttributeMetadataInterface
      * Sets the denormalization context for given groups.
      */
     public function setDenormalizationContextForGroups(array $context, array $groups = []): void;
+
+    /**
+     * Sets the version number from which the attribute must be serialized.
+     */
+    public function setSince(string $version);
+
+    /**
+     * Gets the version number from which the attribute must be serialized.
+     */
+    public function getSince(): ?string;
+
+    /**
+     * Sets the version number after which the attribute must not be serialized.
+     */
+    public function setUntil(string $version);
+
+    /**
+     * Gets the version number after which the attribute must not be serialized.
+     */
+    public function getUntil(): ?string;
 }

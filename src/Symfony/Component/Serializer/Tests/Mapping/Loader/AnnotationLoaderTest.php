@@ -20,6 +20,11 @@ use Symfony\Component\Serializer\Mapping\ClassMetadata;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
 use Symfony\Component\Serializer\Tests\Mapping\Loader\Features\ContextMappingTestTrait;
+use Symfony\Component\Serializer\Tests\Fixtures\AbstractDummy;
+use Symfony\Component\Serializer\Tests\Fixtures\AbstractDummyFirstChild;
+use Symfony\Component\Serializer\Tests\Fixtures\AbstractDummySecondChild;
+use Symfony\Component\Serializer\Tests\Fixtures\AbstractDummyThirdChild;
+use Symfony\Component\Serializer\Tests\Fixtures\IgnoreDummy;
 use Symfony\Component\Serializer\Tests\Mapping\TestClassMetadataFactory;
 
 /**
@@ -190,5 +195,18 @@ abstract class AnnotationLoaderTest extends TestCase
     protected function getLoaderForContextMapping(): LoaderInterface
     {
         return $this->loader;
+    }
+
+    public function testLoadVersion()
+    {
+        $classMetadata = new ClassMetadata($this->getNamespace().'\VersioningDummy');
+        $this->loader->loadClassMetadata($classMetadata);
+
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
+
+        $this->assertSame('1.0.0', $attributesMetadata['foo']->getSince());
+        $this->assertSame('1.1.2', $attributesMetadata['bar']->getSince());
+        $this->assertSame('1.1.9', $attributesMetadata['foo']->getUntil());
+        $this->assertSame('1.3.0', $attributesMetadata['username']->getSince());
     }
 }

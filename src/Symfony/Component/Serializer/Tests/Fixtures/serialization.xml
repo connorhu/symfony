@@ -100,4 +100,8 @@
         </attribute>
     </class>
 
+    <class name="Symfony\Component\Serializer\Tests\Fixtures\VersionDummy">
+        <attribute name="foo" since="1.2.0" until="1.9.1" />
+    </class>
+
 </serializer>

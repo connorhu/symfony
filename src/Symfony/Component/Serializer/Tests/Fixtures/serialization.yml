@@ -64,3 +64,9 @@ Symfony\Component\Serializer\Tests\Fixtures\Annotations\ContextDummy:
     methodWithContext:
       contexts:
         - context: { method: method_with_context }
+
+'Symfony\Component\Serializer\Tests\Fixtures\VersionDummy':
+  attributes:
+    foo:
+      since: '1.0.0'
+      until: '1.1.9'

@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
+use Symfony\Component\Serializer\Annotation\Since;
+use Symfony\Component\Serializer\Annotation\Until;
 use Symfony\Component\Serializer\Exception\MappingException;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
@@ -41,6 +43,8 @@ class AnnotationLoader implements LoaderInterface
         SerializedName::class,
         SerializedPath::class,
         Context::class,
+        Since::class,
+        Until::class,
     ];
 
     private $reader;
@@ -89,6 +93,10 @@ class AnnotationLoader implements LoaderInterface
                         $attributesMetadata[$property->name]->setIgnore(true);
                     } elseif ($annotation instanceof Context) {
                         $this->setAttributeContextsForGroups($annotation, $attributesMetadata[$property->name]);
+                    } elseif ($annotation instanceof Since) {
+                        $attributesMetadata[$property->name]->setSince($annotation->getVersion());
+                    } elseif ($annotation instanceof Until) {
+                        $attributesMetadata[$property->name]->setUntil($annotation->getVersion());
                     }
 
                     $loaded = true;
@@ -156,6 +164,18 @@ class AnnotationLoader implements LoaderInterface
                     }
 
                     $this->setAttributeContextsForGroups($annotation, $attributeMetadata);
+                } elseif ($annotation instanceof Since) {
+                    if (!$accessorOrMutator) {
+                        throw new MappingException(sprintf('Since on "%s::%s" cannot be added. Since can only be added on methods beginning with "get", "is", "has" or "set".', $className, $method->name));
+                    }
+
+                    $attributeMetadata->setSince($annotation->getVersion());
+                } elseif ($annotation instanceof Until) {
+                    if (!$accessorOrMutator) {
+                        throw new MappingException(sprintf('Until on "%s::%s" cannot be added. Until can only be added on methods beginning with "get", "is", "has" or "set".', $className, $method->name));
+                    }
+
+                    $attributeMetadata->setUntil($annotation->getVersion());
                 }
 
                 $loaded = true;

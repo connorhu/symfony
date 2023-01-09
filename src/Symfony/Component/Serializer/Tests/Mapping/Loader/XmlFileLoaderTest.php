@@ -124,4 +124,15 @@ class XmlFileLoaderTest extends TestCase
     {
         return $this->loader;
     }
+
+    public function testVersion()
+    {
+        $classMetadata = new ClassMetadata('Symfony\Component\Serializer\Tests\Fixtures\VersionDummy');
+        $this->loader->loadClassMetadata($classMetadata);
+
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
+
+        $this->assertSame('1.2.0', $attributesMetadata['foo']->getSince());
+        $this->assertSame('1.9.1', $attributesMetadata['foo']->getUntil());
+    }
 }

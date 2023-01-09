@@ -145,4 +145,15 @@ class YamlFileLoaderTest extends TestCase
     {
         return $this->loader;
     }
+
+    public function testVersion()
+    {
+        $classMetadata = new ClassMetadata('Symfony\Component\Serializer\Tests\Fixtures\VersionDummy');
+        $this->loader->loadClassMetadata($classMetadata);
+
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
+
+        $this->assertSame('1.0.0', $attributesMetadata['foo']->getSince());
+        $this->assertSame('1.1.9', $attributesMetadata['foo']->getUntil());
+    }
 }

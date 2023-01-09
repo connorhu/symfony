@@ -96,6 +96,14 @@ class XmlFileLoader extends FileLoader
                     $context = $this->parseContext($node->entry);
                     $attributeMetadata->setDenormalizationContextForGroups($context, $groups);
                 }
+
+                if (isset($attribute['since'])) {
+                    $attributeMetadata->setSince((string) $attribute['since']);
+                }
+
+                if (isset($attribute['until'])) {
+                    $attributeMetadata->setUntil((string) $attribute['until']);
+                }
             }
 
             if (isset($xml->{'discriminator-map'})) {

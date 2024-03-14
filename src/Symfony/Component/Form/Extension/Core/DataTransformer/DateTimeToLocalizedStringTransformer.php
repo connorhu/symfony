@@ -198,7 +198,7 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         return 0 === preg_match('#[ahHkKmsSAzZOvVxX]#', $pattern);
     }
 
-    private function getCalendarConvertingFormatter()
+    private function getCalendarConvertingFormatter(): \IntlDateFormatter
     {
         $timezone = $this->isPatternDateOnly() ? 'UTC' : $this->inputTimezone;
 

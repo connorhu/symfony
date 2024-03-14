@@ -200,7 +200,7 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
 
     private function getCalendarConvertingFormatter(): \IntlDateFormatter
     {
-        $timezone = $this->isPatternDateOnly() ? 'UTC' : $this->inputTimezone;
+        $timezone = $this->isPatternDateOnly() ? date_default_timezone_get() : $this->inputTimezone;
 
         return new \IntlDateFormatter(\Locale::getDefault(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE, new \DateTimeZone($timezone), \IntlDateFormatter::GREGORIAN, 'yyyy-MM-dd HH:mm:ss');
     }

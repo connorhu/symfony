@@ -56,9 +56,12 @@ class RegionDataGenerator extends AbstractDataGenerator
         'QO' => true, // Outlying Oceania
         'XA' => true, // Pseudo-Accents
         'XB' => true, // Pseudo-Bidi
-        'XK' => true, // Kosovo
         // Misc
         'ZZ' => true, // Unknown Region
+    ];
+
+    private const USER_ASSIGNED = [
+        'XK' => true, // Kosovo
     ];
 
     // @see https://en.wikipedia.org/wiki/ISO_3166-1_numeric#Withdrawn_codes
@@ -133,6 +136,7 @@ class RegionDataGenerator extends AbstractDataGenerator
         if (isset($localeBundle['Countries']) && null !== $localeBundle['Countries']) {
             $data = [
                 'Names' => $this->generateRegionNames($localeBundle),
+                'NamesUserAssigned' => $this->generateRegionNames($localeBundle, true),
             ];
 
             $this->regionCodes = array_merge($this->regionCodes, array_keys($data['Names']));
@@ -178,13 +182,19 @@ class RegionDataGenerator extends AbstractDataGenerator
         ];
     }
 
-    protected function generateRegionNames(ArrayAccessibleResourceBundle $localeBundle): array
+    protected function generateRegionNames(ArrayAccessibleResourceBundle $localeBundle, bool $userAssigned = false): array
     {
         $unfilteredRegionNames = iterator_to_array($localeBundle['Countries']);
         $regionNames = [];
 
         foreach ($unfilteredRegionNames as $region => $regionName) {
             if (!self::isValidCountryCode($region)) {
+                continue;
+            }
+
+            if ($userAssigned === false && isset(self::USER_ASSIGNED[$region])) {
+                continue;
+            } elseif ($userAssigned === true && !isset(self::USER_ASSIGNED[$region])) {
                 continue;
             }
 

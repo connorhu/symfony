@@ -833,6 +833,9 @@ class CountriesTest extends ResourceBundleTestCase
         sort($countries);
 
         $this->assertSame(self::COUNTRIES, $countries);
+
+        $userAssignedCountries = Countries::getNames($displayLocale, true);
+        $this->assertArrayHasKey('XK', $userAssignedCountries);
     }
 
     public function testGetNamesDefaultLocale()

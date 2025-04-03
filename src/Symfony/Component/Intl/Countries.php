@@ -147,9 +147,14 @@ final class Countries extends ResourceBundle
      *
      * @return array<string, string>
      */
-    public static function getNames(?string $displayLocale = null): array
+    public static function getNames(?string $displayLocale = null, bool $includeUserAssigned = false): array
     {
-        return self::asort(self::readEntry(['Names'], $displayLocale), $displayLocale);
+        $names = self::readEntry(['Names'], $displayLocale);
+        if ($includeUserAssigned === true) {
+            $names = [...$names, ...self::readEntry(['NamesUserAssigned'], $displayLocale)];
+        }
+
+        return self::asort($names, $displayLocale);
     }
 
     /**

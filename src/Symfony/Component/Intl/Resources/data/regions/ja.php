@@ -252,4 +252,7 @@ return [
         'ZM' => 'ザンビア',
         'ZW' => 'ジンバブエ',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'コソボ',
+    ],
 ];

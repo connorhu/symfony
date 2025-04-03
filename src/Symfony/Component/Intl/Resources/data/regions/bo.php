@@ -13,4 +13,5 @@ return [
         'RU' => 'ཨུ་རུ་སུ་',
         'US' => 'ཨ་མེ་རི་ཀ།',
     ],
+    'NamesUserAssigned' => [],
 ];

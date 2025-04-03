@@ -250,4 +250,5 @@ return [
         'ZM' => 'ཛམ་བྷི་ཡ',
         'ZW' => 'ཛིམ་བྷབ་ཝེ',
     ],
+    'NamesUserAssigned' => [],
 ];

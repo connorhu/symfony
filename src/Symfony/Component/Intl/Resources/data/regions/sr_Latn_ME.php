@@ -14,4 +14,5 @@ return [
         'VG' => 'Britanska Djevičanska Ostrva',
         'VI' => 'Američka Djevičanska Ostrva',
     ],
+    'NamesUserAssigned' => [],
 ];

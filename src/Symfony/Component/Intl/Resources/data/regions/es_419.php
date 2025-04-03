@@ -12,4 +12,5 @@ return [
         'TL' => 'Timor Oriental',
         'UM' => 'Islas Ultramarinas de EE.UU.',
     ],
+    'NamesUserAssigned' => [],
 ];

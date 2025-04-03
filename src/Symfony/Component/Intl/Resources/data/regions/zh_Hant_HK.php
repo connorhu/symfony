@@ -91,4 +91,5 @@ return [
         'ZM' => '贊比亞',
         'ZW' => '津巴布韋',
     ],
+    'NamesUserAssigned' => [],
 ];

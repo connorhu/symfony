@@ -6,4 +6,5 @@ return [
         'RW' => 'U Rwanda',
         'TO' => 'Tonga',
     ],
+    'NamesUserAssigned' => [],
 ];

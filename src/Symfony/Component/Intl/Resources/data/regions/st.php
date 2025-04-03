@@ -5,4 +5,5 @@ return [
         'LS' => 'Lesotho',
         'ZA' => 'Afrika Borwa',
     ],
+    'NamesUserAssigned' => [],
 ];

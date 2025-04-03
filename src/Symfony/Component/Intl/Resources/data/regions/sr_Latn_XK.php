@@ -13,4 +13,5 @@ return [
         'UM' => 'Manja udaljena ostrva SAD',
         'VC' => 'Sveti Vinsent i Grenadini',
     ],
+    'NamesUserAssigned' => [],
 ];

@@ -33,4 +33,5 @@ return [
         'VI' => 'îles Vierges américaines',
         'VN' => 'Vietnam',
     ],
+    'NamesUserAssigned' => [],
 ];

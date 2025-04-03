@@ -22,4 +22,5 @@ return [
         'VI' => 'US Virgin Islands',
         'WF' => 'Wallis and Futuna',
     ],
+    'NamesUserAssigned' => [],
 ];

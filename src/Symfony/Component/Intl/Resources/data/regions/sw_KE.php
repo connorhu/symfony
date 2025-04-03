@@ -63,4 +63,5 @@ return [
         'VI' => 'Visiwa vya Virgin vya Marekani',
         'YT' => 'Mayote',
     ],
+    'NamesUserAssigned' => [],
 ];

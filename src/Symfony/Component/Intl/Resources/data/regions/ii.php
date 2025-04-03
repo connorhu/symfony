@@ -15,4 +15,5 @@ return [
         'RU' => 'ꊉꇆꌦ',
         'US' => 'ꂰꇩ',
     ],
+    'NamesUserAssigned' => [],
 ];

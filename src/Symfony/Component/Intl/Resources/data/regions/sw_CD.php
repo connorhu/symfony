@@ -27,4 +27,5 @@ return [
         'TD' => 'Chadi',
         'TL' => 'Timori ya Mashariki',
     ],
+    'NamesUserAssigned' => [],
 ];

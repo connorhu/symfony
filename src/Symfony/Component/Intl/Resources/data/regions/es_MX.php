@@ -8,4 +8,5 @@ return [
         'SZ' => 'Eswatini',
         'UM' => 'Islas menores alejadas de EE. UU.',
     ],
+    'NamesUserAssigned' => [],
 ];

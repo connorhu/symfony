@@ -252,4 +252,7 @@ return [
         'ZM' => 'Sàimbia',
         'ZW' => 'An t-Sìombab',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'A’ Chosobho',
+    ],
 ];

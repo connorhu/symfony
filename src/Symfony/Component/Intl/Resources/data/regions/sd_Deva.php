@@ -14,4 +14,5 @@ return [
         'RU' => 'रशिया',
         'US' => 'अमेरिका',
     ],
+    'NamesUserAssigned' => [],
 ];

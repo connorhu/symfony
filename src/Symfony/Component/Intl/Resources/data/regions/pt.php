@@ -252,4 +252,7 @@ return [
         'ZM' => 'Zâmbia',
         'ZW' => 'Zimbábue',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'Kosovo',
+    ],
 ];

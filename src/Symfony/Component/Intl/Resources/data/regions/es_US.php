@@ -7,4 +7,5 @@ return [
         'GG' => 'Guernsey',
         'UM' => 'Islas menores alejadas de EE. UU.',
     ],
+    'NamesUserAssigned' => [],
 ];

@@ -252,4 +252,7 @@ return [
         'ZM' => 'Tāmipia',
         'ZW' => 'Timuwawe',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'Kōhoro',
+    ],
 ];

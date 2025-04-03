@@ -68,4 +68,7 @@ return [
         'VU' => 'Vanuatu',
         'WS' => 'Samoa',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'Kosovo',
+    ],
 ];

@@ -252,4 +252,7 @@ return [
         'ZM' => 'ዛምቢያ',
         'ZW' => 'ዚምቧቤ',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'ኮሶቮ',
+    ],
 ];

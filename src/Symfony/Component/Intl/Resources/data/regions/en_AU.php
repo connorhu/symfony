@@ -8,4 +8,5 @@ return [
         'MF' => 'St. Martin',
         'VC' => 'St. Vincent & Grenadines',
     ],
+    'NamesUserAssigned' => [],
 ];

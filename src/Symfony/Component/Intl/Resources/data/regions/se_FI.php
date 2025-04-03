@@ -7,4 +7,5 @@ return [
         'SD' => 'Sudan',
         'TD' => 'Chad',
     ],
+    'NamesUserAssigned' => [],
 ];

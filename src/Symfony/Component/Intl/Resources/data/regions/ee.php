@@ -245,4 +245,5 @@ return [
         'ZM' => 'Zambia nutome',
         'ZW' => 'Zimbabwe nutome',
     ],
+    'NamesUserAssigned' => [],
 ];

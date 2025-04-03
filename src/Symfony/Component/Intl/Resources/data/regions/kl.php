@@ -4,4 +4,5 @@ return [
     'Names' => [
         'GL' => 'Kalaallit Nunaat',
     ],
+    'NamesUserAssigned' => [],
 ];

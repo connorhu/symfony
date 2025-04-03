@@ -34,4 +34,5 @@ return [
         'VG' => 'Dei britiske Jomfruøyane',
         'VI' => 'Dei amerikanske Jomfruøyane',
     ],
+    'NamesUserAssigned' => [],
 ];

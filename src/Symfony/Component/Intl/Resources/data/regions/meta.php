@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 return [
     'Regions' => [
         'AD',
@@ -1029,6 +1020,7 @@ return [
         'XH' => '980',
         'XI' => '981',
         'XJ' => '982',
+        'XK' => '983',
         'XL' => '984',
         'XM' => '985',
         'XN' => '986',
@@ -1316,6 +1308,7 @@ return [
         '_980' => 'XH',
         '_981' => 'XI',
         '_982' => 'XJ',
+        '_983' => 'XK',
         '_984' => 'XL',
         '_985' => 'XM',
         '_986' => 'XN',

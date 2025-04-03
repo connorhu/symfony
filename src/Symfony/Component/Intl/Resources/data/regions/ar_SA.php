@@ -6,4 +6,5 @@ return [
         'MS' => 'مونتيسيرات',
         'UY' => 'أوروغواي',
     ],
+    'NamesUserAssigned' => [],
 ];

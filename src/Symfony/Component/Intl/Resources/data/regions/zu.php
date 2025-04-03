@@ -252,4 +252,7 @@ return [
         'ZM' => 'i-Zambia',
         'ZW' => 'iZimbabwe',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'i-Kosovo',
+    ],
 ];

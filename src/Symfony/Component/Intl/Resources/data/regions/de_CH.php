@@ -9,4 +9,5 @@ return [
         'TL' => 'Osttimor',
         'ZW' => 'Zimbabwe',
     ],
+    'NamesUserAssigned' => [],
 ];

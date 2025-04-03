@@ -251,4 +251,7 @@ return [
         'ZM' => 'iż-Żambja',
         'ZW' => 'iż-Żimbabwe',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'il-Kosovo',
+    ],
 ];

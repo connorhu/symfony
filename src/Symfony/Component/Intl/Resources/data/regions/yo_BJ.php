@@ -81,4 +81,5 @@ return [
         'ZM' => 'Shamibia',
         'ZW' => 'Shimibabe',
     ],
+    'NamesUserAssigned' => [],
 ];

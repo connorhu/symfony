@@ -252,4 +252,7 @@ return [
         'ZM' => 'Zaambiyaa',
         'ZW' => 'Zimbaabuwee',
     ],
+    'NamesUserAssigned' => [
+        'XK' => 'Kosoovoo',
+    ],
 ];

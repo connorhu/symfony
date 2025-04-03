@@ -19,4 +19,5 @@ return [
         'VC' => 'St. Vincent & Grenadines',
         'VI' => 'U.S. Virgin Islands',
     ],
+    'NamesUserAssigned' => [],
 ];

@@ -6,4 +6,5 @@ return [
         'FR' => 'França',
         'HK' => 'Hong Kong',
     ],
+    'NamesUserAssigned' => [],
 ];

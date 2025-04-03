@@ -6,4 +6,5 @@ return [
         'TL' => 'Timor-Leste',
         'UM' => 'Islas menores alejadas de EE. UU.',
     ],
+    'NamesUserAssigned' => [],
 ];

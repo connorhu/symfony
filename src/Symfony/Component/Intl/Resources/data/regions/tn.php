@@ -5,4 +5,5 @@ return [
         'BW' => 'Botswana',
         'ZA' => 'Aforika Borwa',
     ],
+    'NamesUserAssigned' => [],
 ];

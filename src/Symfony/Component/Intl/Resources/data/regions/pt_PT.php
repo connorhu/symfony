@@ -61,4 +61,5 @@ return [
         'YT' => 'Maiote',
         'ZW' => 'Zimbabué',
     ],
+    'NamesUserAssigned' => [],
 ];

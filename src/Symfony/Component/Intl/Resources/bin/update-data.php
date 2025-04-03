@@ -78,6 +78,7 @@ if ($argc >= 2) {
 }
 
 $gitTag = $git->getLastTag(fn ($tag) => preg_match('#^release-[0-9]{1,}-[0-9]{1}$#', $tag));
+$gitTag = 'release-76-1';
 $shortIcuVersion = strip_minor_versions(preg_replace('#release-([0-9]{1,})-([0-9]{1,})#', '$1.$2', $gitTag));
 
 echo "Checking out `{$gitTag}` for version `{$shortIcuVersion}`...\n";
